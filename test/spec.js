@@ -40,5 +40,30 @@ describe('Clipmaster Spectron', function () {
 			.browserWindow.isDevToolsOpened();
 
 		return assert.equal(devToolsAreOpen, false);
-	})
+	});
+
+	it('has a button with text "Copy from Clipboard"', async () => {
+		const buttonText = await app.client
+			.getText('#copy-from-clipboard');
+
+		return assert.equal(buttonText, 'Copy from Clipboard');
+	});
+
+	it('should not have any clippings when it starts up', async () => {
+		await app.client.waitUntilWindowLoaded();
+		const clippings = await app.client.$$('.clippings-list-item');
+
+		return assert.equal(clippings.length,0);
+	});
+
+	it('should have one clipping when the "Copy from Clipboard" button ' +
+		'has been pressed', async () => {
+		await app.client.waitUntilWindowLoaded();
+		await app.client.click('#copy-from-clipboard');
+
+		const clippings = await app.client.$$('.clippings-list-item');
+
+		return assert.equal(clippings.length, 1);
+	});
+
 });
