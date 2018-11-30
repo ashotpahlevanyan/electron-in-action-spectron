@@ -1,5 +1,5 @@
 {
-  "name": "clipmaster-9000",
+  "name": "clipmaster-spectron",
   "version": "1.0.0",
   "description": "A menubar application with a rich UI.",
   "main": "app/main.js",
@@ -7,15 +7,15 @@
     "start": "electron .",
     "test": "mocha"
   },
-  "repository": "https://github.com/electron-in-action/clipmaster-9000.git",
-  "author": "Steve Kinney <hello@stevekinney.net>",
+  "repository": "https://github.com/ashotpahlevanyan/electron-in-action-spectron",
+  "author": "Ashot Pahlevanyan",
   "license": "MIT",
   "keywords": [
     "electron",
     "clipboard"
   ],
   "dependencies": {
-    "electron": "1.8.2",
+    "electron": "3.0.10",
     "menubar": "5.2.3",
     "request": "2.83.0"
   },
