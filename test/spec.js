@@ -7,6 +7,9 @@ const { beforeEach, afterEach } = require('mocha');
 const app = new Application({
   path: electronPath,
   args: [path.join(__dirname, '..')]
+	// webdriverOptions: {
+	// 	deprecationWarnings: false
+	// }
 });
 
 describe('Clipmaster Spectron', function () {
@@ -66,4 +69,35 @@ describe('Clipmaster Spectron', function () {
 		return assert.equal(clippings.length, 1);
 	});
 
+	it('should successfully remove a clipping', async () => {
+		await app.client.waitUntilWindowLoaded();
+		await app.client
+			.click('#copy-from-clipboard')
+			.moveToObject('.clippings-list-item')
+			.click('.remove-clipping');
+
+		const clippings = await app.client.$$('.clippings-list-item');
+
+		return assert.equal(clippings.length, 0);
+	});
+
+	it('should have a correct text in a new clipping', async () => {
+		await app.client.waitUntilWindowLoaded();
+		await app.electron.clipboard.writeText('Vegan Ham');
+		await app.client.click('#copy-from-clipboard');
+		const clippingText = await app.client.getText('.clipping-text');
+
+		return assert.equal(clippingText, 'Vegan Ham');
+	});
+
+	it('should write clipping text to the clipboard', async () => {
+		await app.client.waitUntilWindowLoaded();
+		await app.electron.clipboard.writeText('Vegan Ham');
+		await app.client.click('#copy-from-clipboard');
+		await app.electron.clipboard.writeText('Something Different');
+		await app.client.click('.copy-clipping');
+		const clipboardText = await app.electron.clipboard.readText();
+
+		return assert.equal(clipboardText, 'Vegan Ham');
+	});
 });
